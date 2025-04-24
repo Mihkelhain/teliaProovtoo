@@ -10,10 +10,7 @@ function App() {
         isikukood: ''
     });
 
-    useEffect(() => {
-        fetchIsikud();
-    }, []);
-
+    useEffect(() => {fetchIsikud();}, []);
 
 
     const fetchIsikud = async () => {
@@ -29,6 +26,7 @@ function App() {
             console.error('Error fetching isikud:', error);
         }
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,12 +50,14 @@ function App() {
         }
     };
 
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
+
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`http://localhost:8080/api/isikud/${id}`, {
