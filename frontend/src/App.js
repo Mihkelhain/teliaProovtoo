@@ -13,6 +13,7 @@ function App() {
         sunnipaev: '',
         isikukood: ''
     });
+    const[editVis, setEditVis] = useState({});
 
     useEffect(() => {fetchIsikud();}, []);
 
@@ -79,18 +80,25 @@ function App() {
         }
     };
     const handleUpdate = async(id) => {
+        console.log("Update handled")
+        setEditVis(prev => ({...prev, [id]: !prev[id]}));
+
+        if(editVis[id]){
         try{
             const response = await fetch(`http://localhost:8080/api/isikud/${id}`,{
                 method: 'PATCH'
             });
             console.log(response)
             if(!response.ok)
-                throw new Error('user ')
+                throw new Error('user not updated')
         }
         catch(error) {
             console.log(error)
         }
     }
+    };
+
+
 
     return (<div style={{padding: '20px'}}>
             <h1>Isikud</h1>
@@ -115,45 +123,66 @@ function App() {
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.sunnipaev}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.isikukood}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>
-                            <button onClick={() => handleDelete(isik.id)}
-                                    style={{background: 'red', color: 'white', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>Delete
-                            </button>
-                        </td>
-                    <td style={{border: '1px solid #ddd', padding: '8px'}}>
-                        <button onClick={() => handleUpdate(isik.id)}
-                                style={{background: 'yellow', color: 'green', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>edit
-                        </button>
-                    </td>
-                    <td>
                         <div>
-                            <h4>Popup - GeeksforGeeks</h4>
                             <Popup trigger=
-                                       {<button> Click to open modal </button>}
+                                       {<button style={{background:'yellow',color:'black',padding:'8px',border:'none',borderRadius:'4px',cursor:'pointer'}}> Details </button>}
                                    modal nested>
                                 {
                                     close => (
                                         <div className='modal'>
                                             <div className='content'>
-                                                Welcome to GFG!!!
-                                                <p>{isik.id}</p>
-                                                <p>{isik.eesnimi}</p>
-                                                <p>{isik.perenimi}</p>
-                                                <p>{isik.email}</p>
-                                                <p>{isik.sunnipaev}</p>
-                                                <p>{isik.isikukood}</p>
+
+                                               <div style={{border:"solid"}}>
+                                                   <p>Id: {isik.id} </p>
+                                               </div>
+
+                                                <div style={{border:"solid"}}>
+                                                    <p>Eesnimi: {isik.eesnimi} </p>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.eesnimi}></input>
+                                                </div>
+
+                                                <div style={{border:"solid"}}>
+                                                    <p>Perenimi: {isik.perenimi} </p>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+
+                                                </div>
+
+                                                <div style={{border:"solid"}}>
+                                                    <p>Email: {isik.email}</p>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+                                                </div>
+
+                                               <div style={{border:"solid"}}>
+                                                   <p>Sünnipäev: {isik.sunnipaev}</p>
+                                                   <input type={"date"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+                                               </div>
+
+                                                <div style={{border:"solid"}}>
+                                                    <p>Isikukood: {isik.isikukood}</p>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+                                                </div>
+                                                <div>
+                                                    <button onClick={() => handleUpdate(isik.id)}
+                                                            style={{background: 'yellow', color: 'green', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>edit
+                                                    </button>
+                                                </div>
 
                                             </div>
                                             <div>
                                                 <button onClick=
                                                             {() => close()}>
-                                                    Close modal
+                                                    Close Details
                                                 </button>
                                             </div>
                                         </div>
+
                                     )
                                 }
                             </Popup>
                         </div>
+                            <button onClick={() => handleDelete(isik.id)}
+                                    style={{background: 'red', color: 'white', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>Delete
+                            </button>
                     </td>
 
                     </tr>))}

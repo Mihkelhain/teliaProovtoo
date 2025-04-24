@@ -58,7 +58,7 @@ public class IsikController {
     }
 
     //Changing
-    @PatchMapping("/api/isikud/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Isik> updateIsik(
             @PathVariable Long id,
             @RequestBody Map<String, Object> updates) {
