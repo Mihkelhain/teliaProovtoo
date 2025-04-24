@@ -156,7 +156,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1745487983588</updated>
-      <workItem from="1745487985003" duration="13817000" />
+      <workItem from="1745487985003" duration="23860000" />
     </task>
     <servers />
   </component>
@@ -164,8 +164,18 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="864bd895-351b-4c02-81fd-72ab892a79e5" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="864bd895-351b-4c02-81fd-72ab892a79e5">
+          <value>
+            <State />
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />

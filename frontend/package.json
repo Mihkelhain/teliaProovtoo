@@ -37,7 +37,13 @@
     ]
   },
   "options": {
-    "allowedHosts": ["localhost", ".localhost"],
+    "allowedHosts": [
+      "localhost",
+      ".localhost"
+    ],
     "proxy": "http://localhost:8080"
+  },
+  "devDependencies": {
+    "reactjs-popup": "^2.0.6"
   }
 }

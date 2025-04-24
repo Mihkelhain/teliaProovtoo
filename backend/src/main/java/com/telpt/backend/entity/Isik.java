@@ -16,8 +16,10 @@ public class Isik {
     @Column(name = "isikud_id")
     private long id;
 
-    @Column(name = "nimi", nullable = false)
-    private String nimi;
+    @Column(name = "eesnimi", nullable = false)
+    private String eesnimi;
+    @Column(name = "perenimi", nullable = false)
+    private String perenimi;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
