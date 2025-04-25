@@ -3,7 +3,6 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import React, { useState, useEffect } from 'react';
 
-
 function App() {
     const [isikud, setIsikud] = useState([]);
     const [formData, setFormData] = useState({
@@ -14,6 +13,7 @@ function App() {
         isikukood: ''
     });
     const[editVis, setEditVis] = useState({});
+    const[editIsik,setEditIsik] = useState({});
 
     useEffect(() => {fetchIsikud();}, []);
 
@@ -79,28 +79,32 @@ function App() {
             console.error('Delete failed: ', error);
         }
     };
-    const handleUpdate = async(id) => {
-        console.log("Update handled")
-        setEditVis(prev => ({...prev, [id]: !prev[id]}));
 
-        if(editVis[id]){
-        try{
-            const response = await fetch(`http://localhost:8080/api/isikud/${id}`,{
-                method: 'PATCH'
-            });
-            console.log(response)
-            if(!response.ok)
-                throw new Error('user not updated')
+    const handleUpdate = async (isik) => {
+        setEditVis(prev => ({prev, [isik.id]: !prev[isik.id]}));
+        console.log(isik)
+        if (editVis[isik.id]) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/isikud/${isik.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(editIsik[isik.id])
+                });
+
+                if (!response.ok) throw new Error('patch fail');
+                fetchIsikud();
+            } catch (error) {
+                console.error('patch fail: ', error);
+            }
         }
-        catch(error) {
-            console.log(error)
-        }
-    }
+    };
+
+    const handleEditChange = (e, field, isikId) => {
+        setEditIsik(prev => ({prev, [isikId]: {...prev[isikId], [field]: e.target.value}}));
     };
 
 
-
-    return (<div style={{padding: '20px'}}>
+    return <div style={{padding: '20px'}}>
             <h1>Isikud</h1>
             <table style={{width: '100%', borderCollapse: 'collapse'}}>
                 <thead>
@@ -115,12 +119,15 @@ function App() {
                 </tr>
                 </thead>
                 <tbody>
-                {isikud.map(isik => (<tr key={isik.id}>
+                {isikud.map(isik => <tr key={isik.id}>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.id}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.eesnimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.perenimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.email}</td>
-                        <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.sunnipaev}</td>
+
+                    {/*This is solely needed cause i dont like mm-dd-yyyy and the additonal fact is that sunnipaev is nullable so need to check that also,it might not be in the future tho*/}
+                        <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.sunnipaev ? new Date(isik.sunnipaev).toLocaleDateString('en-GB') : ''}</td>
+
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.isikukood}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>
                         <div>
@@ -138,31 +145,31 @@ function App() {
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Eesnimi: {isik.eesnimi} </p>
-                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.eesnimi}></input>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.eesnimi} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
                                                 </div>
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Perenimi: {isik.perenimi} </p>
-                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
 
                                                 </div>
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Email: {isik.email}</p>
-                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.email } onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
                                                 </div>
 
                                                <div style={{border:"solid"}}>
-                                                   <p>Sünnipäev: {isik.sunnipaev}</p>
-                                                   <input type={"date"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+                                                   <p>Sünnipäev: {isik.sunnipaev ? new Date(isik.sunnipaev).toLocaleDateString('en-GB') : ''}</p>
+                                                   <input type={"date"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.sunnipaev} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
                                                </div>
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Isikukood: {isik.isikukood}</p>
-                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi}></input>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.isikukood} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
                                                 </div>
                                                 <div>
-                                                    <button onClick={() => handleUpdate(isik.id)}
+                                                    <button onClick={() => handleUpdate(isik)}
                                                             style={{background: 'yellow', color: 'green', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>edit
                                                     </button>
                                                 </div>
@@ -185,7 +192,7 @@ function App() {
                             </button>
                     </td>
 
-                    </tr>))}
+                    </tr>)}
                 </tbody>
             </table>
 
@@ -250,7 +257,6 @@ function App() {
                     Lisa isik
                 </button>
             </form>
-        </div>
-    );
+        </div>;
 }
 export default App;

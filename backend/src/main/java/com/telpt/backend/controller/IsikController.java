@@ -57,34 +57,39 @@ public class IsikController {
         }
     }
 
-    //Changing
     @PatchMapping("/{id}")
-    public ResponseEntity<Isik> updateIsik(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<Isik> updateIsik(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+        Optional<Isik> isikOptional = isikRepository.findById(id);
 
-        return isikRepository.findById(id)
-                .map(existingIsik -> {
-                    // Apply partial updates
-                    if (updates.containsKey("eesnimi")) {
-                        existingIsik.setEesnimi((String) updates.get("eesnimi"));
-                    }
-                    if (updates.containsKey("perenimi")) {
-                        existingIsik.setPerenimi((String) updates.get("perenimi"));
-                    }
-                    if (updates.containsKey("email")) {
-                        existingIsik.setEmail((String) updates.get("email"));
-                    }
-                    if (updates.containsKey("sunnipaev")) {
-                        existingIsik.setSunnipaev(LocalDate.parse((String) updates.get("sunnipaev")));
-                    }
-                    if (updates.containsKey("isikukood")) {
-                        existingIsik.setIsikukood((String) updates.get("isikukood"));
-                    }
+        if (isikOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
-                    Isik updatedIsik = isikRepository.save(existingIsik);
-                    return ResponseEntity.ok(updatedIsik);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Isik isik = isikOptional.get();
+
+        // Apply each update from the request body
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "eesnimi":
+                    isik.setEesnimi((String) value);
+                    break;
+                case "perenimi":
+                    isik.setPerenimi((String) value);
+                    break;
+                case "email":
+                    isik.setEmail((String) value);
+                    break;
+                case "sunnipaev":
+                    // Parse the date string to LocalDate
+                    isik.setSunnipaev(LocalDate.parse((String) value));
+                    break;
+                case "isikukood":
+                    isik.setIsikukood((String) value);
+                    break;
+            }
+        });
+
+        Isik updatedIsik = isikRepository.save(isik);
+        return ResponseEntity.ok(updatedIsik);
     }
 }
