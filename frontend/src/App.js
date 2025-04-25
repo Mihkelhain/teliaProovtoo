@@ -2,6 +2,7 @@
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import React, { useState, useEffect } from 'react';
+import './App.css'
 
 function App() {
     const [isikud, setIsikud] = useState([]);
@@ -14,7 +15,6 @@ function App() {
     });
     const[editVis, setEditVis] = useState({});
     const[editIsik,setEditIsik] = useState({});
-
     useEffect(() => {fetchIsikud();}, []);
 
 // reminder 8080/api is the api the server itself is at 3000
@@ -104,6 +104,7 @@ function App() {
 
     return <div style={{padding: '20px'}}>
             <h1>Isikud</h1>
+        <div id={"isikListScr"}>
             <table style={{width: '100%', borderCollapse: 'collapse'}}>
                 <thead>
                 <tr> {/*Top of boxes annotations for the presesntation something*/}
@@ -197,6 +198,9 @@ function App() {
                     </tr>)}
                 </tbody>
             </table>
+        </div>
+
+
 
         {/*
         TODO Works but needs a rework on the visual side of things
