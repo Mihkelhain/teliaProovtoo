@@ -123,14 +123,11 @@ function App() {
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.eesnimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.perenimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.email}</td>
-
                     {/*This is solely needed cause i dont like mm-dd-yyyy and the additonal fact is that sunnipaev is nullable so need to check that also,it might not be in the future tho*/}
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.sunnipaev ? new Date(isik.sunnipaev).toLocaleDateString('en-GB') : ''}</td>
 
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.isikukood}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>
-
-                            {/*Pop up that i decided on for some reason*/}
                             <div>
                             <Popup trigger=
                                        {<button style={{background:'yellow',color:'black',padding:'8px',border:'none',borderRadius:'4px',cursor:'pointer'}}> Details </button>}
@@ -151,31 +148,31 @@ function App() {
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Perenimi: {isik.perenimi} </p>
-                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi} onChange={(e) => handleEditChange(e,'perenimi',isik.id)}></input>
 
                                                 </div>
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Email: {isik.email}</p>
-                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.email } onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.email } onChange={(e) => handleEditChange(e,'email',isik.id)}></input>
                                                 </div>
 
                                                <div style={{border:"solid"}}>
                                                    <p>Sünnipäev: {isik.sunnipaev ? new Date(isik.sunnipaev).toLocaleDateString('en-GB') : ''}</p>
-                                                   <input type={"date"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.sunnipaev} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
+                                                   <input type={"date"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.sunnipaev} onChange={(e) => handleEditChange(e,'sunnipaev',isik.id)}></input>
                                                </div>
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Isikukood: {isik.isikukood}</p>
-                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.isikukood} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
+                                                    <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.isikukood} onChange={(e) => handleEditChange(e,'isikukood',isik.id)}></input>
                                                 </div>
                                                 {/*
-                                                TODO For tommorrow, make the button change wheter the values are being activley being edit to create some sort of feed back
                                                 TODO Also maybe add pictures to details view?????????????
+                                                TODO Also there is a need to make the webpage searchable and orderable depending on the datatype
                                                 */}
                                                 <div>
                                                     <button onClick={() => handleUpdate(isik)}
-                                                            style={{background: 'yellow', color: 'green', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>edit
+                                                            style={{background:editVis[isik.id] ? 'green' : 'yellow', color: 'black', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>{editVis[isik.id] ? "Accept changes" : "edit"  }
                                                     </button>
                                                 </div>
 
