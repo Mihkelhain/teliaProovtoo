@@ -6,6 +6,7 @@ import './App.css'
 
 function App() {
     const [isikud, setIsikud] = useState([]);
+    const[SearchedIsikud,setSearchedIsikud] = useState([]);
     const [formData, setFormData] = useState({
         eesnimi: '',
         perenimi: '',
@@ -15,7 +16,24 @@ function App() {
     });
     const[editVis, setEditVis] = useState({});
     const[editIsik,setEditIsik] = useState({});
+    const[Search,setSearch] = useState('');
+
     useEffect(() => {fetchIsikud();}, []);
+
+    useEffect(() => {
+        const searched = isikud.filter(isik => {
+            const searchLower = Search.toLowerCase();
+            return (
+                isik.eesnimi.toLowerCase().includes(searchLower) ||
+                isik.perenimi.toLowerCase().includes(searchLower) ||
+                isik.email.toLowerCase().includes(searchLower) ||
+                (isik.isikukood && isik.isikukood.toLowerCase().includes(searchLower)) ||
+                (isik.id && isik.id.toString().includes(Search))
+            );
+        });
+        setSearchedIsikud(searched);
+    }, [Search, isikud]);
+
 
 // reminder 8080/api is the api the server itself is at 3000
 
@@ -56,11 +74,6 @@ function App() {
             console.error('Error adding isik:', error);
         }
     };
-    const handleChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
-    };
-
-
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`http://localhost:8080/api/isikud/${id}`, {
@@ -97,19 +110,24 @@ function App() {
             }
         }
     };
-    const handleEditChange = (e, field, isikId) => {
-        setEditIsik(prev => ({prev, [isikId]: {...prev[isikId], [field]: e.target.value}}));
-    };
 
     const handleSearch = async () => {
 
     }
-
+    /*Handlers for the inputs themself*/
+    const handleEditChange = (e, field, isikId) => {
+        setEditIsik(prev => ({prev, [isikId]: {...prev[isikId], [field]: e.target.value}}));
+    };
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value)
+    }
+    const handleChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.value});
+    };
     return <div style={{padding: '20px'}}>
             <h1 style={{marginLeft: '20px'}}>Isikud</h1>
         <div id={"topBar"}>
-            <input placeholder={"Otsi nimekirjas......"}></input>
-            <button onClick={handleSearch} > Otsi </button>
+            <input placeholder={"Otsi nimekirjas......"} type={'text'} value={Search} onChange={handleSearchChange}></input>
         </div>
         <form onSubmit={handleSubmit} style={{ margin: '20px',float:'left' }}>
             <h2 >Lisa uus isik</h2>
@@ -188,7 +206,7 @@ function App() {
                 </thead>
                 <tbody>
                 {/*Actual data gets presented by these tds >:)*/}
-                {isikud.map(isik => <tr key={isik.id}>
+                {SearchedIsikud.map(isik => <tr key={isik.id}>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.id}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.eesnimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.perenimi}</td>
