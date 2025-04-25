@@ -34,9 +34,7 @@ public class IsikController {
     public ResponseEntity<Isik> getIsikById(@PathVariable long id) {
         Optional<Isik> isik = isikRepository.findById(id);
 
-        return isik.map(ResponseEntity::ok)
-                //dont remove this will java scream at you
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return isik.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

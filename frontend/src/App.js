@@ -103,7 +103,73 @@ function App() {
 
 
     return <div style={{padding: '20px'}}>
-            <h1>Isikud</h1>
+            <h1 style={{marginLeft: '20px'}}>Isikud</h1>
+        <div id={"topBar"}>
+            <input placeholder={"Search....."}></input>
+            <button> Search </button>
+        </div>
+        <form onSubmit={handleSubmit} style={{ margin: '20px',float:'left' }}>
+            <h2 >Lisa uus isik</h2>
+            <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', marginBottom: '5px' }}>Eesnimi:</label>
+                <input
+                    type="text"
+                    name="eesnimi"
+                    value={formData.eesnimi}
+                    onChange={handleChange}
+                    required
+                    id = {"addInput"}
+                />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', marginBottom: '5px' }}>Perenimi:</label>
+                <input
+                    type="text"
+                    name="perenimi"
+                    value={formData.perenimi}
+                    onChange={handleChange}
+                    required
+                    id = {"addInput"}
+                />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', marginBottom: '5px' }}>Email:</label>
+                <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    id = {"addInput"}
+                />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', marginBottom: '5px' }}>Sünnipäev:</label>
+                <input
+                    type="date"
+                    name="sunnipaev"
+                    value={formData.sunnipaev}
+                    onChange={handleChange}
+                    id = {"addInput"}
+                />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', marginBottom: '5px' }}>Isikukood:</label>
+                <input
+                    type="text"
+                    name="isikukood"
+                    value={formData.isikukood}
+                    onChange={handleChange}
+                    required
+                    id = {"addInput"}
+                />
+            </div>
+            <button type="submit" style={{ padding: '10px 15px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px' }}>
+                Lisa isik
+            </button>
+        </form>
+
+
         <div id={"isikListScr"}>
             <table style={{width: '100%', borderCollapse: 'collapse'}}>
                 <thead>
@@ -206,66 +272,6 @@ function App() {
         TODO Works but needs a rework on the visual side of things
         maybe make the presentation scroll inside the webpage or something like that
         */}
-            <h2>Lisa uus isik</h2>
-            <form onSubmit={handleSubmit} style={{ margin: '20px' }}>
-                <div style={{ marginBottom: '10px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Eesnimi:</label>
-                    <input
-                        type="text"
-                        name="eesnimi"
-                        value={formData.eesnimi}
-                        onChange={handleChange}
-                        required
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Perenimi:</label>
-                    <input
-                        type="text"
-                        name="perenimi"
-                        value={formData.perenimi}
-                        onChange={handleChange}
-                        required
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Sünnipäev:</label>
-                    <input
-                        type="date"
-                        name="sunnipaev"
-                        value={formData.sunnipaev}
-                        onChange={handleChange}
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Isikukood:</label>
-                    <input
-                        type="text"
-                        name="isikukood"
-                        value={formData.isikukood}
-                        onChange={handleChange}
-                        required
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                </div>
-                <button type="submit" style={{ padding: '10px 15px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px' }}>
-                    Lisa isik
-                </button>
-            </form>
         </div>;
 }
 export default App;

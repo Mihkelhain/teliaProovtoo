@@ -39,5 +39,19 @@
 
 #isikListScr{
   overflow-y: scroll;
-  height: 400px;
+  height: 600px;
+  border: dashed;
+}
+
+#addInput{
+
+  padding: 8px;
+}
+#topBar{
+  padding: 8px ;
+  background: lightgrey;
+  border: solid;
+  border-color: lightgrey;
+  margin-bottom: 10px;
+  margin-left: 20px;
 }
