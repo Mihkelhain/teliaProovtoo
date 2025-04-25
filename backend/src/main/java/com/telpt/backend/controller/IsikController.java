@@ -35,6 +35,7 @@ public class IsikController {
         Optional<Isik> isik = isikRepository.findById(id);
 
         return isik.map(ResponseEntity::ok)
+                //dont remove this will java scream at you
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -59,8 +60,11 @@ public class IsikController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Isik> updateIsik(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+
+        //finds the thing to change
         Optional<Isik> isikOptional = isikRepository.findById(id);
 
+        //checks if empty if is then send back
         if (isikOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -89,6 +93,7 @@ public class IsikController {
             }
         });
 
+        //Send the updates back :)
         Isik updatedIsik = isikRepository.save(isik);
         return ResponseEntity.ok(updatedIsik);
     }

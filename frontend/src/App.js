@@ -17,6 +17,7 @@ function App() {
 
     useEffect(() => {fetchIsikud();}, []);
 
+// reminder 8080/api is the api the server itself is at 3000
 
     const fetchIsikud = async () => {
         try {
@@ -55,14 +56,10 @@ function App() {
             console.error('Error adding isik:', error);
         }
     };
-
-
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
+
 
     const handleDelete = async (id) => {
         try {
@@ -70,7 +67,6 @@ function App() {
                 method: 'DELETE'
             });
             console.log(response)
-
             if (!response.ok) {
                 throw new Error('Delete failed');
             }
@@ -80,6 +76,9 @@ function App() {
         }
     };
 
+    //setEditVis is for the popup section
+    //we take the object and then bim bam boom we have changes
+    //also remember this shit updates
     const handleUpdate = async (isik) => {
         setEditVis(prev => ({prev, [isik.id]: !prev[isik.id]}));
         console.log(isik)
@@ -98,7 +97,6 @@ function App() {
             }
         }
     };
-
     const handleEditChange = (e, field, isikId) => {
         setEditIsik(prev => ({prev, [isikId]: {...prev[isikId], [field]: e.target.value}}));
     };
@@ -108,7 +106,7 @@ function App() {
             <h1>Isikud</h1>
             <table style={{width: '100%', borderCollapse: 'collapse'}}>
                 <thead>
-                <tr>
+                <tr> {/*Top of boxes annotations for the presesntation something*/}
                     <th style={{border: '1px solid #ddd', padding: '8px'}}>ID</th>
                     <th style={{border: '1px solid #ddd', padding: '8px'}}>eesnimi</th>
                     <th style={{border: '1px solid #ddd', padding: '8px'}}>perenimi</th>
@@ -119,6 +117,7 @@ function App() {
                 </tr>
                 </thead>
                 <tbody>
+                {/*Actual data gets presented by these tds >:)*/}
                 {isikud.map(isik => <tr key={isik.id}>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.id}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.eesnimi}</td>
@@ -130,18 +129,20 @@ function App() {
 
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.isikukood}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>
-                        <div>
+
+                            {/*Pop up that i decided on for some reason*/}
+                            <div>
                             <Popup trigger=
                                        {<button style={{background:'yellow',color:'black',padding:'8px',border:'none',borderRadius:'4px',cursor:'pointer'}}> Details </button>}
                                    modal nested>
-                                {
-                                    close => (
+                                {close => (
                                         <div className='modal'>
                                             <div className='content'>
-
                                                <div style={{border:"solid"}}>
                                                    <p>Id: {isik.id} </p>
                                                </div>
+
+                                                {/*These are the data presentation of the details view also keep in mind that input window is hidden until the edit button is pressed once and hidden again when pressed again*/}
 
                                                 <div style={{border:"solid"}}>
                                                     <p>Eesnimi: {isik.eesnimi} </p>
@@ -168,6 +169,10 @@ function App() {
                                                     <p>Isikukood: {isik.isikukood}</p>
                                                     <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.isikukood} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
                                                 </div>
+                                                {/*
+                                                TODO For tommorrow, make the button change wheter the values are being activley being edit to create some sort of feed back
+                                                TODO Also maybe add pictures to details view?????????????
+                                                */}
                                                 <div>
                                                     <button onClick={() => handleUpdate(isik)}
                                                             style={{background: 'yellow', color: 'green', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>edit
@@ -196,7 +201,10 @@ function App() {
                 </tbody>
             </table>
 
-
+        {/*
+        TODO Works but needs a rework on the visual side of things
+        maybe make the presentation scroll inside the webpage or something like that
+        */}
             <h2>Lisa uus isik</h2>
             <form onSubmit={handleSubmit} style={{ margin: '20px' }}>
                 <div style={{ marginBottom: '10px' }}>
