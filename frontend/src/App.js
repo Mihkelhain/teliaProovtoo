@@ -30,9 +30,7 @@ function App() {
                 (isik.isikukood && isik.isikukood.toLowerCase().includes(searchLower)) ||
                 (isik.id && isik.id.toString().includes(Search))
             );
-        });
-        setSearchedIsikud(searched);
-    }, [Search, isikud]);
+        });setSearchedIsikud(searched);}, [Search, isikud]);
 
 
 // reminder 8080/api is the api the server itself is at 3000
@@ -201,7 +199,7 @@ function App() {
                     <th style={{border: '1px solid #ddd', padding: '8px'}}>Email</th>
                     <th style={{border: '1px solid #ddd', padding: '8px'}}>Sünnipäev</th>
                     <th style={{border: '1px solid #ddd', padding: '8px'}}>Isikukood</th>
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>Actions</th>
+                    <th style={{border: '1px solid #ddd', padding: '8px'}}>Tegevused</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -218,7 +216,7 @@ function App() {
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>
                             <div>
                             <Popup trigger=
-                                       {<button style={{background:'yellow',color:'black',padding:'8px',border:'none',borderRadius:'4px',cursor:'pointer'}}> Details </button>}
+                                       {<button style={{background:'yellow',color:'black',padding:'8px',border:'none',borderRadius:'4px',cursor:'pointer'}}> Detailid </button>}
                                    modal nested>
                                 {close => (
                                         <div className='modal'>
@@ -276,7 +274,7 @@ function App() {
                             </Popup>
                         </div>
                             <button onClick={() => handleDelete(isik.id)}
-                                    style={{background: 'red', color: 'white', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>Delete
+                                    style={{background: 'red', color: 'white', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>Kustuta
                             </button>
                     </td>
 

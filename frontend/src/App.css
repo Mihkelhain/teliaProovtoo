@@ -48,10 +48,16 @@
   padding: 8px;
 }
 #topBar{
+  align-items: center;
+  display: flex;
   padding: 8px ;
   background: lightgrey;
   border: solid;
   border-color: lightgrey;
   margin-bottom: 10px;
   margin-left: 20px;
+}
+#topBarItems{
+  position: absolute;
+  right: auto;
 }
