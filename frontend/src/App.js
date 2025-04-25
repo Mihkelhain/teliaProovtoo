@@ -101,12 +101,15 @@ function App() {
         setEditIsik(prev => ({prev, [isikId]: {...prev[isikId], [field]: e.target.value}}));
     };
 
+    const handleSearch = async () => {
+
+    }
 
     return <div style={{padding: '20px'}}>
             <h1 style={{marginLeft: '20px'}}>Isikud</h1>
         <div id={"topBar"}>
-            <input placeholder={"Search....."}></input>
-            <button> Search </button>
+            <input placeholder={"Otsi nimekirjas......"}></input>
+            <button onClick={handleSearch} > Otsi </button>
         </div>
         <form onSubmit={handleSubmit} style={{ margin: '20px',float:'left' }}>
             <h2 >Lisa uus isik</h2>
@@ -239,17 +242,15 @@ function App() {
                                                 */}
                                                 <div>
                                                     <button onClick={() => handleUpdate(isik)}
-                                                            style={{background:editVis[isik.id] ? 'green' : 'yellow', color: 'black', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>{editVis[isik.id] ? "Accept changes" : "edit"  }
+                                                            style={{background:editVis[isik.id] ? 'green' : 'yellow', color: 'black', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer',marginRight:'8px'}}>{editVis[isik.id] ? "Muuda andmeid" : "Muuda andmeid"  }
+                                                    </button>
+                                                    <button onClick={() => close()}
+                                                            style={{background:editVis[isik.id] ? 'red' : 'grey', color: 'black', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>Välju detailide vaatest
                                                     </button>
                                                 </div>
 
                                             </div>
-                                            <div>
-                                                <button onClick=
-                                                            {() => close()}>
-                                                    Close Details
-                                                </button>
-                                            </div>
+
                                         </div>
 
                                     )
