@@ -7,6 +7,7 @@ import './App.css'
 function App() {
     const [isikud, setIsikud] = useState([]);
     const[SearchedIsikud,setSearchedIsikud] = useState([]);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
     const [formData, setFormData] = useState({
         eesnimi: '',
         perenimi: '',
@@ -31,9 +32,46 @@ function App() {
                 (isik.id && isik.id.toString().includes(Search))
             );
         });setSearchedIsikud(searched);}, [Search, isikud]);
-
-
 // reminder 8080/api is the api the server itself is at 3000
+
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const sortedIsikud = React.useMemo(() => {
+        let sortableIsikud = [...SearchedIsikud];
+        if (sortConfig.key) {
+            sortableIsikud.sort((a, b) => {
+
+                // Turns out this needs special handeling
+                if (sortConfig.key === 'sunnipaev') {
+                    const dateA = new Date(a[sortConfig.key]);
+                    const dateB = new Date(b[sortConfig.key]);
+                    if (dateA < dateB) {
+                        return sortConfig.direction === 'ascending' ? -1 : 1;
+                    }
+                    if (dateA > dateB) {
+                        return sortConfig.direction === 'ascending' ? 1 : -1;
+                    }
+                    return 0;
+                }
+
+                // This handles everything except the date
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableIsikud;
+    }, [SearchedIsikud, sortConfig]);
 
     const fetchIsikud = async () => {
         try {
@@ -109,9 +147,13 @@ function App() {
         }
     };
 
-    const handleSearch = async () => {
 
-    }
+    const getSortIndicator = (key) => {
+        if (sortConfig.key === key) {
+            return sortConfig.direction === 'ascending' ? ' ↑' : ' ↓';
+        }
+        return null;
+    };
     /*Handlers for the inputs themself*/
     const handleEditChange = (e, field, isikId) => {
         setEditIsik(prev => ({prev, [isikId]: {...prev[isikId], [field]: e.target.value}}));
@@ -193,18 +235,18 @@ function App() {
             <table style={{width: '100%', borderCollapse: 'collapse'}}>
                 <thead>
                 <tr> {/*Top of boxes annotations for the presesntation something*/}
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>ID</th>
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>eesnimi</th>
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>perenimi</th>
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>Email</th>
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>Sünnipäev</th>
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>Isikukood</th>
-                    <th style={{border: '1px solid #ddd', padding: '8px'}}>Tegevused</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('id')}>ID{getSortIndicator('id')}</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('eesnimi')}>eesnimi{getSortIndicator('eesnimi')}</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('perenimi')}>perenimi{getSortIndicator('perenimi')}</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('email')}>email{getSortIndicator('email')}</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('sunnipaev')}>sünnipäev{getSortIndicator('sunnipäev')}</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('isikukood')}>isikukood{getSortIndicator('isikukood')}</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 {/*Actual data gets presented by these tds >:)*/}
-                {SearchedIsikud.map(isik => <tr key={isik.id}>
+                {sortedIsikud.map(isik => <tr key={isik.id}>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.id}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.eesnimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.perenimi}</td>
@@ -252,10 +294,6 @@ function App() {
                                                     <p>Isikukood: {isik.isikukood}</p>
                                                     <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.isikukood} onChange={(e) => handleEditChange(e,'isikukood',isik.id)}></input>
                                                 </div>
-                                                {/*
-                                                TODO Also maybe add pictures to details view?????????????
-                                                TODO Also there is a need to make the webpage searchable and orderable depending on the datatype
-                                                */}
                                                 <div>
                                                     <button onClick={() => handleUpdate(isik)}
                                                             style={{background:editVis[isik.id] ? 'green' : 'yellow', color: 'black', padding: '8px', border: 'none', borderRadius: '4px', cursor: 'pointer',marginRight:'8px'}}>{editVis[isik.id] ? "Muuda andmeid" : "Muuda andmeid"  }
@@ -283,12 +321,6 @@ function App() {
             </table>
         </div>
 
-
-
-        {/*
-        TODO Works but needs a rework on the visual side of things
-        maybe make the presentation scroll inside the webpage or something like that
-        */}
         </div>;
 }
 export default App;
