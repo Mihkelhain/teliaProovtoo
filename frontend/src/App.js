@@ -234,14 +234,13 @@ function App() {
         <div id={"isikListScr"}>
             <table style={{width: '100%', borderCollapse: 'collapse'}}>
                 <thead>
-                <tr> {/*Top of boxes annotations for the presesntation something*/}
+                <tr>{/*Top of boxes annotations for the presesntation*/}
                     <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('id')}>ID{getSortIndicator('id')}</th>
                     <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('eesnimi')}>eesnimi{getSortIndicator('eesnimi')}</th>
                     <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('perenimi')}>perenimi{getSortIndicator('perenimi')}</th>
                     <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('email')}>email{getSortIndicator('email')}</th>
                     <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('sunnipaev')}>sünnipäev{getSortIndicator('sunnipäev')}</th>
                     <th style={{ border: '1px solid #ddd', padding: '8px', cursor: 'pointer' }} onClick={() => requestSort('isikukood')}>isikukood{getSortIndicator('isikukood')}</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -251,7 +250,7 @@ function App() {
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.eesnimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.perenimi}</td>
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.email}</td>
-                    {/*This is solely needed cause i dont like mm-dd-yyyy and the additonal fact is that sunnipaev is nullable so need to check that also,it might not be in the future tho*/}
+                    {/*This is solely needed cause i dont like mm-dd-yyyy and the additonal fact is that sunnipaev is nullable so need to check that*/}
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.sunnipaev ? new Date(isik.sunnipaev).toLocaleDateString('en-GB') : ''}</td>
 
                         <td style={{border: '1px solid #ddd', padding: '8px'}}>{isik.isikukood}</td>
@@ -263,34 +262,34 @@ function App() {
                                 {close => (
                                         <div className='modal'>
                                             <div className='content'>
-                                               <div style={{border:"solid"}}>
+                                               <div id={"detailOutput"}>
                                                    <p>Id: {isik.id} </p>
                                                </div>
 
                                                 {/*These are the data presentation of the details view also keep in mind that input window is hidden until the edit button is pressed once and hidden again when pressed again*/}
-
-                                                <div style={{border:"solid"}}>
+                                                <div style={{float:"left"}}>
+                                                <div id={"detailOutput"}>
                                                     <p>Eesnimi: {isik.eesnimi} </p>
                                                     <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.eesnimi} onChange={(e) => handleEditChange(e,'eesnimi',isik.id)}></input>
                                                 </div>
 
-                                                <div style={{border:"solid"}}>
+                                                <div id={"detailOutput"}>
                                                     <p>Perenimi: {isik.perenimi} </p>
                                                     <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.perenimi} onChange={(e) => handleEditChange(e,'perenimi',isik.id)}></input>
 
                                                 </div>
 
-                                                <div style={{border:"solid"}}>
+                                                <div id={"detailOutput"}>
                                                     <p>Email: {isik.email}</p>
                                                     <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.email } onChange={(e) => handleEditChange(e,'email',isik.id)}></input>
                                                 </div>
-
-                                               <div style={{border:"solid"}}>
+                                                </div>
+                                               <div id={"detailOutput"}>
                                                    <p>Sünnipäev: {isik.sunnipaev ? new Date(isik.sunnipaev).toLocaleDateString('en-GB') : ''}</p>
                                                    <input type={"date"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.sunnipaev} onChange={(e) => handleEditChange(e,'sunnipaev',isik.id)}></input>
                                                </div>
 
-                                                <div style={{border:"solid"}}>
+                                                <div id={"detailOutput"}>
                                                     <p>Isikukood: {isik.isikukood}</p>
                                                     <input type={"text"} style={{display:editVis[isik.id] ? 'block' : 'none'}} placeholder={isik.isikukood} onChange={(e) => handleEditChange(e,'isikukood',isik.id)}></input>
                                                 </div>
